@@ -59,7 +59,7 @@ def display_output(best_deal_list):
         for i, name in enumerate(deal):
             print(name[0] + "    " + str(name[1]))
         print(fontstyle.apply(f" Total Cost: {best_deal_list[k][1]} euros", "bold"))
-        print(fontstyle.apply(f" Total Profit: {best_deal_list[k][2]} euros\n", "bold"))
+        print(fontstyle.apply(f" Total Profit: {best_deal_list[k][2]} %\n", "bold"))
 
 
 def main():
