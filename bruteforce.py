@@ -1,6 +1,6 @@
 """ Module to find best combinations of shares to be purchased using Brute Force Algorithm"""
-import pandas as pd
 from itertools import combinations
+import pandas as pd
 import fontstyle
 
 
@@ -10,9 +10,11 @@ def readfile():
     shares_df = pd.read_csv("Shares_List.csv", header=0, delimiter=";")
     shares_list = []
 
-    # make a list of tuples containing name, price and profit
+    # make a list of tuples containing name, price and profit in euros
     for i in range(len(shares_df)):
-        shares_list.append([shares_df.iloc[i, 0], shares_df.iloc[i, 1], shares_df.iloc[i, 2].rstrip('%')])
+        profit_in_euro = 0
+        profit_in_euro = (float(shares_df.iloc[i, 1]) * float(shares_df.iloc[i, 2].rstrip('%')))/100
+        shares_list.append([shares_df.iloc[i, 0], shares_df.iloc[i, 1], profit_in_euro])
     return shares_list
 
 
@@ -59,7 +61,7 @@ def display_output(best_deal_list):
         for i, name in enumerate(deal):
             print(name[0] + "    " + str(name[1]))
         print(fontstyle.apply(f" Total Cost: {best_deal_list[k][1]} euros", "bold"))
-        print(fontstyle.apply(f" Total Profit: {best_deal_list[k][2]} %\n", "bold"))
+        print(fontstyle.apply(f" Total Profit: {best_deal_list[k][2]} euros\n", "bold"))
 
 
 def main():
@@ -67,5 +69,6 @@ def main():
     shares_data = readfile()
     best_deal = generate_combination(shares_data)
     display_output(best_deal)
+
 
 main()
