@@ -1,4 +1,6 @@
 """ Module to find best combinations of shares to be purchased using Brute Force Algorithm"""
+import time
+import sys
 from itertools import combinations
 import pandas as pd
 import fontstyle
@@ -7,14 +9,15 @@ import fontstyle
 def readfile():
     """ Function to read Shares data stored in csv file"""
 
-    shares_df = pd.read_csv("Shares_List.csv", header=0, delimiter=";")
+    shares_df = pd.read_csv("Shares_List.csv", header=0, delimiter=",")
     shares_list = []
 
     # make a list of tuples containing name, price and profit in euros
     for i in range(len(shares_df)):
         profit_in_euro = 0
-        profit_in_euro = (float(shares_df.iloc[i, 1]) * float(shares_df.iloc[i, 2].rstrip('%')))/100
-        shares_list.append([shares_df.iloc[i, 0], shares_df.iloc[i, 1], profit_in_euro])
+        # convert profit per share in % to euros
+        profit_in_euro = (float(shares_df.iloc[i, 1]) * float(shares_df.iloc[i, 2]))/100
+        shares_list.append([shares_df.iloc[i, 0], shares_df.iloc[i, 1], round(profit_in_euro, 2)])
     return shares_list
 
 
@@ -50,25 +53,31 @@ def display_output(best_deal_list):
     """ Function to display(formatted) the best deal to invest """
     # sort list by descending order of profit
     best_deal_list = sorted(best_deal_list, key=lambda x: x[2], reverse=True)
-    print("Best Investment combinations are: ")
-    for k in range(2):
-        print("-"*30)
-        print(fontstyle.apply(f"\tOption-{k+1}", "bold"))
-        print("-"*30)
-        print(" Name\tPrice")
-        print("-"*30)
-        deal = best_deal_list[k][0]
-        for i, name in enumerate(deal):
-            print(name[0] + "    " + str(name[1]))
-        print(fontstyle.apply(f" Total Cost: {best_deal_list[k][1]} euros", "bold"))
-        print(fontstyle.apply(f" Total Profit: {best_deal_list[k][2]} euros\n", "bold"))
+    print(fontstyle.apply("Best Investment Strategy is:", "bold"))
+    # for k in range(2):
+    print("-"*30)
+    # print(fontstyle.apply(f"\tOption-{k+1}", "bold"))
+    # print("-"*30)
+    print(" Name\t\tPrice\tProfit(in euros)")
+    print("-"*30)
+    deal = best_deal_list[0][0]
+    for i, name in enumerate(deal):
+        print(name[0] + " \t" + str(name[1]) + "\t" + str(name[2]))
+    print(fontstyle.apply(f" Total Cost: {best_deal_list[0][1]} euros", "bold"))
+    print(fontstyle.apply(f" Total Profit: {best_deal_list[0][2]} euros\n", "bold"))
 
 
 def main():
     """ Main function to start execution"""
+    start = time.time()
+    memory_blocks = sys.getallocatedblocks()
     shares_data = readfile()
     best_deal = generate_combination(shares_data)
     display_output(best_deal)
+    end = time.time()
+    time_diff = (end - start) * 10**3
+    print(f"Time taken by Bruteforce Algorithm = {time_diff:.02f} ms")
+    print(f"The space allocated is {memory_blocks} ")
 
 
 main()
