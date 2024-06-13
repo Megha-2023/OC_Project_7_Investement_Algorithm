@@ -10,7 +10,7 @@ import fontstyle
 def readfile():
     """ Function to read Shares data stored in csv file"""
 
-    shares_df = pd.read_csv("dataset1.csv", header=0, delimiter=",")
+    shares_df = pd.read_csv("Shares_List.csv", header=0, delimiter=",")
     shares_list = []
 
     # make a list of tuples containing name, price(multiplied by 100 to make integer)

@@ -70,14 +70,15 @@ def display_output(best_deal_list):
 def main():
     """ Main function to start execution"""
     start = time.time()
-    memory_blocks = sys.getallocatedblocks()
+    memory_before = sys.getallocatedblocks()
     shares_data = readfile()
     best_deal = generate_combination(shares_data)
     display_output(best_deal)
     end = time.time()
-    time_diff = (end - start) * 10**3
-    print(f"Time taken by Bruteforce Algorithm = {time_diff:.02f} ms")
-    print(f"The space allocated is {memory_blocks} ")
+    time_diff = (end - start)
+    memory_after = sys.getallocatedblocks() - memory_before
+    print(f"Time taken by Bruteforce Algorithm = {time_diff:.02f} seconds")
+    print(f"The space allocated = {memory_after} blocks")
 
 
 main()
