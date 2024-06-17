@@ -16,8 +16,9 @@ def readfile():
     for i in range(len(shares_df)):
         profit_in_euro = 0
         # convert profit per share in % to euros
-        profit_in_euro = (float(shares_df.iloc[i, 1]) * float(shares_df.iloc[i, 2]))/100
-        shares_list.append([shares_df.iloc[i, 0], shares_df.iloc[i, 1], round(profit_in_euro, 2)])
+        if float(shares_df.iloc[i, 1]) > 0:
+            profit_in_euro = (float(shares_df.iloc[i, 1]) * float(shares_df.iloc[i, 2]))/100
+            shares_list.append([shares_df.iloc[i, 0], shares_df.iloc[i, 1], round(profit_in_euro, 2)])
     return shares_list
 
 
